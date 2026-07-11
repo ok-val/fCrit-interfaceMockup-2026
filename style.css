@@ -1,4 +1,179 @@
+/* Start of reset */
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+    margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    /* 4. Increase line-height */
+    line-height: 1.5;
+    line-height: calc(1em + 0.5rem);
+    /* 5. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+}
+
+/* 10. Create a root stacking context */
+#root,
+#__next {
+    isolation: isolate;
+}
+/* End of reset */
+
+
+
 :root {
+    --grid-gap: 4px;
+    --border-color: #cbcbcb;
+    --border-radius: 6px;
+    --dialogue-padding: 8px 14px;
+
+    font-size: 12px;
+    font-family: 'Inter', Helvetica, sans-serif;
     background-color: #EBE7DF;
 }
 
+
+main {
+    height: 100vh;
+    padding: 6px;
+    
+    display: grid;
+    gap: var(--grid-gap);
+    
+    grid-template-columns: minmax(66ch, 95ch) minmax(300px, 1fr);
+}
+
+
+#canvas--conversation {
+    display: grid;
+    grid-template-rows: 10fr 1fr;    
+    gap: var(--grid-gap);
+}
+
+/* Chat thread */
+
+#window--chat-thread{
+    background-color: #F5F4F0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px 20px; 
+
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#chat-thread {
+    list-style-type: none;
+    padding: 0;
+    
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+#chat-thread li {
+    padding: var(--dialogue-padding);
+    max-width: 66ch;
+}
+
+.turn--ai {
+    text-align: right;
+    align-self: flex-end;
+}
+
+.turn--user {
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    /* This resizes the border to surround the content */
+    align-self: flex-start;
+}
+
+
+/* User input */
+
+#window--chat-input {   
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-input {
+    padding: var(--dialogue-padding);
+    flex: 1 1 100%;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    
+    box-sizing: border-box;
+    resize: none;
+    
+}
+
+#chat-input:focus {
+    outline: 2px solid rgb(106, 101, 95);
+    outline-offset: -1px;
+}
+
+
+
+#insight--conversation {
+    border: 1px solid var(--border-color);
+}

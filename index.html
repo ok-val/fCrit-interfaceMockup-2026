@@ -11,6 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <script defer src="script.js"></script>
 </head>
 
 <body>
@@ -49,8 +50,17 @@
         </section>
 
         <section aria-label="Insight canvas" id="insight--conversation">
-            <figure>
-                <div class="annotation"></div>
+            <figure class="viewport">
+                <div class="world">
+                    <img src="./img/furnitureImage-bw.jpg" draggable="false" alt="Chair">
+                    <svg class="connectors"></svg>
+                    <div class="annotation" style="left: 50px; top: 220px; background-color: whitesmoke;">
+                        bends and flows
+                    </div>
+                    <div class="annotation" style="left: 320px; top: 200px; background-color: whitesmoke;">
+                        noodle-y, playful yet elegant
+                    </div>
+                </div>
             </figure>
         </section>
     </main>

@@ -74,6 +74,7 @@ h6 {
 #__next {
     isolation: isolate;
 }
+
 /* End of reset */
 
 
@@ -93,27 +94,27 @@ h6 {
 main {
     height: 100vh;
     padding: 6px;
-    
+
     display: grid;
     gap: var(--grid-gap);
-    
+
     grid-template-columns: minmax(66ch, 95ch) minmax(300px, 1fr);
 }
 
 
 #canvas--conversation {
     display: grid;
-    grid-template-rows: 10fr 1fr;    
+    grid-template-rows: 10fr 1fr;
     gap: var(--grid-gap);
 }
 
 /* Chat thread */
 
-#window--chat-thread{
+#window--chat-thread {
     background-color: #F5F4F0;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    padding: 20px 20px; 
+    padding: 20px 20px;
 
     display: flex;
     flex-direction: column-reverse;
@@ -122,7 +123,7 @@ main {
 #chat-thread {
     list-style-type: none;
     padding: 0;
-    
+
     display: flex;
     gap: 8px;
     flex-direction: column;
@@ -151,7 +152,7 @@ main {
 
 /* User input */
 
-#window--chat-input {   
+#window--chat-input {
     display: flex;
     flex-direction: column;
 }
@@ -161,10 +162,11 @@ main {
     flex: 1 1 100%;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    
+
     box-sizing: border-box;
     resize: none;
-    
+
+    font-size: inherit;
 }
 
 #chat-input:focus {
@@ -173,7 +175,68 @@ main {
 }
 
 
+/* Insight window config */
 
 #insight--conversation {
     border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.world img {
+    position: absolute;
+    inset: 0;
+    top: 0;
+    left: 0;
+    scale: 0.5;
+}
+
+/* viewport panning config */
+.viewport {
+    position: relative;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.viewport.panning {
+    cursor: grabbing;
+}
+
+.world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* 2000x2000 canvas space */
+    width: 2000px;
+    height: 2000px;
+    /* setPointerCapture will handle this later in JS */
+    transform: translate(0px, 0px);
+}
+
+
+svg.connectors {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /* stop lines from intercepting drag events */
+    pointer-events: none;
+}
+
+.annotation {
+    position: absolute;
+    padding: 2px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
+    /* change cursor hover state to grab */
+    cursor: grab;
+    /* stops touch drag from scrolling the page */
+    touch-action: none;
+    /* stops touch drag from selecting marqueeing elements */
+    user-select: none;
+}
+
+.annotation:active {
+    cursor: grabbing;
 }

@@ -84,6 +84,8 @@ h6 {
     --border-color: #cbcbcb;
     --border-radius: 6px;
     --dialogue-padding: 8px 14px;
+    --canvas-width: 2000px;
+    --canvas-height: 2000px;
 
     font-size: 12px;
     font-family: 'Inter', Helvetica, sans-serif;
@@ -180,15 +182,9 @@ main {
 #insight--conversation {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+    background-color: white;
 }
 
-.world img {
-    position: absolute;
-    inset: 0;
-    top: 0;
-    left: 0;
-    scale: 0.5;
-}
 
 /* viewport panning config */
 .viewport {
@@ -205,30 +201,46 @@ main {
 
 .world {
     position: absolute;
-    top: 0;
-    left: 0;
+    /* Pre-offet */
+    /* LATER: Could use a view marque feature */
+    top: -1000px;
+    left: -1005px;
     /* 2000x2000 canvas space */
-    width: 2000px;
-    height: 2000px;
+    width: var(--canvas-width);
+    height: var(--canvas-height);
     /* setPointerCapture will handle this later in JS */
+    /* do not touch */
     transform: translate(0px, 0px);
 }
 
-
-svg.connectors {
+.world img {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    /* stop lines from intercepting drag events */
-    pointer-events: none;
+    top: 960px;
+    left: 920px;
+    scale: 0.6;
+    opacity: 0.7;
+    /* filter: contrast(1.2); */
+}
+
+canvas {
+    position: absolute;
+    margin: 0;
+    z-index: -1;
 }
 
 .annotation {
     position: absolute;
-    padding: 2px 10px;
+
+    font-weight: 500;
+    max-width: 32ch;
+    line-height: 1.33em;
+
+    padding: 4px 10px;
     border-radius: 10px;
     border: 1px solid var(--border-color);
     box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
+    
     /* change cursor hover state to grab */
     cursor: grab;
     /* stops touch drag from scrolling the page */

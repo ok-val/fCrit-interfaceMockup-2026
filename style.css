@@ -142,8 +142,10 @@ main {
 .color-picker {
     position: absolute;
     margin: 0;
-}
 
+    /* z-index: 1; */
+    background: gray;
+}
 
 .turn--ai {
     text-align: right;

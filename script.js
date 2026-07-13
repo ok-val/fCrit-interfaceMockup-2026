@@ -108,17 +108,91 @@ const makeHighlightDrag = function () {
     const chatThread = document.getElementById('chat-thread');
     const picker = document.querySelector('.color-picker'); // hidden by default
 
-    chatThread.addEventListener('mouseup', () => {
+    chatThread.addEventListener('mouseup', (e) => {
         const sel = window.getSelection();
         if (sel.isCollapsed || sel.toString().trim() === '') {
             picker.hidden = true;
             return;
         }
-        const rect = sel.getRangeAt(0).getBoundingClientRect();
-        console.clear();
-        console.log(sel.getRangeAt(0));
-        picker.style.left = `${rect.right}px`;
-        picker.style.top = `${rect.bottom}px`;
+
+        /**
+         * Note that the getRangeAt() method returns a range object
+         * that gives me where the current selection begins and ends
+         * in the HTML structure.
+         * Thus, I can use this to get the coord for the color picker
+         */
+        // const rect = sel.getRangeAt(0).getBoundingClientRect();
+        /**
+         * Actually, we don't want to use the highlighted bounding box
+         * but we want to use the position of the cursor instead.
+         * It's more intuitive.
+         */ 
+        picker.style.left = `${e.clientX + 4}px`;
+        picker.style.top = `${e.clientY + 4}px`;
         picker.hidden = false;
     });
+
+    picker.addEventListener('click', (e) => {
+        const color = 'blue'; // e.g. "blue"
+        // const color = e.target.dataset.color; // e.g. "blue"
+        if (!color) return;
+
+        const sel = window.getSelection();
+        const range = sel.getRangeAt(0);
+        const mark = document.createElement('mark');
+        mark.className = `highlight highlight--${color}`;
+        mark.draggable = false;
+        range.surroundContents(mark); // wraps the selected text in place
+
+        sel.removeAllRanges();
+        picker.hidden = true;
+        makeChipDraggable(mark);
+    });
+
+    // function makeChipDraggable(chip) {
+    //     let ghost;
+
+    //     chip.addEventListener('pointerdown', (e) => {
+    //         chip.setPointerCapture(e.pointerId);
+    //         ghost = chip.cloneNode(true);
+    //         ghost.classList.add('drag-ghost'); // position: fixed; pointer-events: none;
+    //         document.body.appendChild(ghost);
+    //     });
+
+    //     chip.addEventListener('pointermove', (e) => {
+    //         if (!ghost) return;
+    //         ghost.style.left = `${e.clientX}px`;
+    //         ghost.style.top = `${e.clientY}px`;
+    //     });
+
+    //     chip.addEventListener('pointerup', (e) => {
+    //         const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+    //         const viewport = document.querySelector('.viewport');
+    //         if (viewport.contains(dropTarget)) {
+    //             createAnnotation({
+    //                 text: chip.textContent,
+    //                 color: chip.dataset.color ?? [...chip.classList].find(c => c.startsWith('highlight--'))?.replace('highlight--', ''),
+    //                 x: e.clientX, y: e.clientY, // convert to .world-local coords, accounting for current pan
+    //             });
+    //         }
+    //         ghost.remove();
+    //         ghost = null;
+    //     });
+    // }
+
+    // function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
+    //     const el = document.createElement('div');
+    //     el.className = `annotation annotation--${color}`;
+    //     el.textContent = text;
+    //     el.style.left = `${x}px`;
+    //     el.style.top = `${y}px`;
+    //     document.querySelector('.world').appendChild(el);
+    //     makeDraggable(el); // the function from the panning tutorial
+
+    //     if (anchorX != null) {
+    //         // optionally draw a connecannotations
+    //     }
+    //     return el;
+    // }
 }();
+

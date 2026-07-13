@@ -134,7 +134,16 @@ main {
 #chat-thread li {
     padding: var(--dialogue-padding);
     max-width: 66ch;
+
 }
+
+/* grabbable texts from chat thread */
+
+.color-picker {
+    position: absolute;
+    margin: 0;
+}
+
 
 .turn--ai {
     text-align: right;
@@ -203,7 +212,7 @@ main {
     position: absolute;
     /* Pre-offet */
     /* LATER: Could use a view marque feature */
-    top: -1000px;
+    top: -800px;
     left: -1005px;
     /* 2000x2000 canvas space */
     width: var(--canvas-width);
@@ -216,18 +225,22 @@ main {
 .world img {
     position: absolute;
     inset: 0;
-    top: 960px;
+    top: 760px;
     left: 920px;
     scale: 0.6;
     opacity: 0.7;
     /* filter: contrast(1.2); */
 }
 
+/* canvas grid config */
+
 canvas {
     position: absolute;
     margin: 0;
     z-index: -1;
 }
+
+/* canvas annotation settings */
 
 .annotation {
     position: absolute;
@@ -240,7 +253,7 @@ canvas {
     border-radius: 10px;
     border: 1px solid var(--border-color);
     box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
-    
+
     /* change cursor hover state to grab */
     cursor: grab;
     /* stops touch drag from scrolling the page */

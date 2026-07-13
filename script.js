@@ -86,16 +86,39 @@ viewport.addEventListener('pointerdown', (e) => {
     viewport.classList.add('panning');
     startX = e.clientX - panX;
     startY = e.clientY - panY;
-})
+});
 
 viewport.addEventListener('pointermove', (e) => {
     if (!viewport.hasPointerCapture(e.pointerId)) return;
     panX = e.clientX - startX;
     panY = e.clientY - startY;
     world.style.transform = `translate(${panX}px, ${panY}px)`;
-})
+});
 
 viewport.addEventListener('pointerup', (e) => {
     viewport.releasePointerCapture(e.pointerId);
     viewport.classList.remove('panning');
-})
+});
+
+
+
+// Highlighted marker
+
+const makeHighlightDrag = function () {
+    const chatThread = document.getElementById('chat-thread');
+    const picker = document.querySelector('.color-picker'); // hidden by default
+
+    chatThread.addEventListener('mouseup', () => {
+        const sel = window.getSelection();
+        if (sel.isCollapsed || sel.toString().trim() === '') {
+            picker.hidden = true;
+            return;
+        }
+        const rect = sel.getRangeAt(0).getBoundingClientRect();
+        console.clear();
+        console.log(sel.getRangeAt(0));
+        picker.style.left = `${rect.right}px`;
+        picker.style.top = `${rect.bottom}px`;
+        picker.hidden = false;
+    });
+}();

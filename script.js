@@ -107,6 +107,7 @@ viewport.addEventListener('pointerup', (e) => {
 const makeHighlightDrag = function () {
     const chatThread = document.getElementById('chat-thread');
     const picker = document.querySelector('.color-picker'); // hidden by default
+    let clonedRange = null;
 
     chatThread.addEventListener('mouseup', (e) => {
         const sel = window.getSelection();
@@ -115,6 +116,8 @@ const makeHighlightDrag = function () {
             return;
         }
 
+        const range = sel.getRangeAt(0);
+        clonedRange = range.cloneRange();
         /**
          * Note that the getRangeAt() method returns a range object
          * that gives me where the current selection begins and ends
@@ -126,27 +129,23 @@ const makeHighlightDrag = function () {
          * Actually, we don't want to use the highlighted bounding box
          * but we want to use the position of the cursor instead.
          * It's more intuitive.
-         */ 
+         */
+
+        // Show picker widget
         picker.style.left = `${e.clientX + 4}px`;
         picker.style.top = `${e.clientY + 4}px`;
         picker.hidden = false;
     });
 
     picker.addEventListener('click', (e) => {
-        const color = 'blue'; // e.g. "blue"
-        // const color = e.target.dataset.color; // e.g. "blue"
-        if (!color) return;
+        const color = 'blue';
+        if (!color || !clonedRange) return;
 
-        const sel = window.getSelection();
-        const range = sel.getRangeAt(0);
         const mark = document.createElement('mark');
         mark.className = `highlight highlight--${color}`;
-        mark.draggable = false;
-        range.surroundContents(mark); // wraps the selected text in place
-
-        sel.removeAllRanges();
+        clonedRange.surroundContents(mark); // operate on the saved range, not a fresh selection
+        clonedRange = null;
         picker.hidden = true;
-        makeChipDraggable(mark);
     });
 
     // function makeChipDraggable(chip) {

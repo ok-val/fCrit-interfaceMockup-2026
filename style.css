@@ -87,6 +87,12 @@ h6 {
     --canvas-width: 2000px;
     --canvas-height: 2000px;
 
+    --sunshine: #ffffc7;
+    --lightgreen: #a5d5ac;
+    --lavender: #DCD7FF;
+    --lightsalmon: #f2ba86;
+    --orange: #DA7F51;
+
     font-size: 12px;
     font-family: 'Inter', Helvetica, sans-serif;
     background-color: #EBE7DF;
@@ -142,12 +148,100 @@ main {
 .color-picker {
     position: absolute;
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: white;
+    border: 4px solid white;
+    border-radius: var(--border-radius);
+    outline: 1px solid var(--border-color);
 
-    /* z-index: 1; */
-    background: gray;
+    /* top stack */
+    z-index: 1;
+
+    /* makeHighlightDrag handles dipslay toggling */
+    /* display: flex; */
+    gap: 1px;
+    flex-direction: column;
+
+    box-shadow: 1.5px 1.5px 8px rgba(82, 82, 82, 0.459);
 }
 
+.color-picker>h5 {
+    font-size: 0.75em;
+    border-bottom: 1px solid lightgrey;
+    font-weight: 700;
+    color: gray;
+    padding: 0px 8px;
+}
 
+.color-picker div {
+    position: relative;
+    padding: 4px 8px;
+    width: auto;
+}
+
+.color-picker div:hover {
+    background-color: rgb(229, 229, 229);
+    cursor: default;
+}
+
+.color-picker div>svg {
+    position: relative;
+    top: 4px;
+    left: -4px;
+    display: inline-block;
+    /* outline: 1px solid var(--border-color); */
+    /* border-radius: 4px; */
+}
+
+/* Pseudo-el runs short of color enumeration */
+
+/* .color-picker div::before {
+    content: '';
+    position: relative;
+    top: 3px;
+    left: -4px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="%23007acc"><rect x="3" y="3" width="18" height="18" rx="2" /></svg>');
+} */
+
+
+.highlight {
+    border-radius: 4px;
+}
+
+.highlight--sunshine {
+    --main-fill: var(--sunshine);
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+}
+
+.highlight--lightgreen {
+    --main-fill: var(--lightgreen);
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+}
+
+.highlight--lavender {
+    --main-fill: var(--lavender);
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+}
+
+.highlight--lightsalmon {
+    --main-fill: var(--lightsalmon);
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+}
+
+.highlight--orange {
+    --main-fill: var(--orange);
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    color: whitesmoke;
+}
 
 .turn--ai {
     text-align: right;

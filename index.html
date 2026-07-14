@@ -18,9 +18,39 @@
     <main>
         <section aria-label="Conversation space" id="canvas--conversation">
             <section aria-label="Chat thread" id="window--chat-thread">
-                <div class="color-picker" hidden>
-                    Color picker
-                </div>
+                <menu class="color-picker" hidden>
+                    <h5>Highlighter color</h5>
+                    <div id="color-picker--sunshine" color="sunshine">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#ffffc7">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Sunshine
+                    </div>
+                    <div id="color-picker--light-green" color="lightgreen">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#a5d5ac">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Light green
+                    </div>
+                    <div id="color-picker--lavender" color="lavender">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#c4bbfc">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Lavender
+                    </div>
+                    <div id="color-picker--light-salmon" color="lightsalmon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#f2ba86">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Salmon
+                    </div>
+                    <div id="color-picker--orange" color="orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#DA7F51">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Tomato
+                    </div>
+                </menu>
                 <ol id="chat-thread">
                     <li class="turn--user">Hi! I like this design.</li>
                     <li class="turn--ai">What specifically attracts you to this chair design? I notice it has those
@@ -58,10 +88,10 @@
                     <canvas id="gridCanvas" width="2000" height="2000"></canvas>
                     <img src="./img/furnitureImage-bw.jpg" draggable="false" alt="Chair">
                     <!-- <svg class="world--grid"></svg> -->
-                    <div class="annotation" style="left: 1080px; top: 970px; background-color: whitesmoke;">
+                    <div class="annotation" style="left: 1080px; top: 970px; background-color: #FFFFE0;">
                         bends and flows
                     </div>
-                    <div class="annotation" style="left: 1360px; top: 950px; background-color: whitesmoke;">
+                    <div class="annotation" style="left: 1360px; top: 950px; background-color: #FFFFE0;">
                         noodle-y, playful yet elegant
                     </div>
                     <div class="annotation" style="left: 1420px; top: 1100px; background-color: #c2dec6;">

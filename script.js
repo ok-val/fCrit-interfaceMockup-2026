@@ -75,31 +75,32 @@ document.querySelectorAll('.annotation').forEach(makeDraggable);
 
 // Pan handler
 
-const viewport = document.querySelector('.viewport');
-const world = document.querySelector('.world');
-let panX = 0;
-let panY = 0;
-let startX, startY;
+const makeInsightWindowPannable = function () {
+    const viewport = document.querySelector('.viewport');
+    const world = document.querySelector('.world');
+    let panX = 0;
+    let panY = 0;
+    let startX, startY;
 
-viewport.addEventListener('pointerdown', (e) => {
-    viewport.setPointerCapture(e.pointerId);
-    viewport.classList.add('panning');
-    startX = e.clientX - panX;
-    startY = e.clientY - panY;
-});
+    viewport.addEventListener('pointerdown', (e) => {
+        viewport.setPointerCapture(e.pointerId);
+        viewport.classList.add('panning');
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+    });
 
-viewport.addEventListener('pointermove', (e) => {
-    if (!viewport.hasPointerCapture(e.pointerId)) return;
-    panX = e.clientX - startX;
-    panY = e.clientY - startY;
-    world.style.transform = `translate(${panX}px, ${panY}px)`;
-});
+    viewport.addEventListener('pointermove', (e) => {
+        if (!viewport.hasPointerCapture(e.pointerId)) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        world.style.transform = `translate(${panX}px, ${panY}px)`;
+    });
 
-viewport.addEventListener('pointerup', (e) => {
-    viewport.releasePointerCapture(e.pointerId);
-    viewport.classList.remove('panning');
-});
-
+    viewport.addEventListener('pointerup', (e) => {
+        viewport.releasePointerCapture(e.pointerId);
+        viewport.classList.remove('panning');
+    });
+}();
 
 
 // Highlighted marker
@@ -108,10 +109,28 @@ const makeHighlightDrag = function () {
     const chatThread = document.getElementById('chat-thread');
     const picker = document.querySelector('.color-picker'); // hidden by default
     let clonedRange = null;
+    
+    function toggleColorPicker(value = 'on' | 'off') {
+        switch (value) {
+            case 'on': {
+                picker.style.display = 'flex';
+                picker.hidden = false;
+                break;
+            }
+            case 'off': {
+                picker.style.display = 'none';
+                picker.hidden = true;
+                break;
+            }
+        }
+    }
+
+    toggleColorPicker('off');
 
     chatThread.addEventListener('mouseup', (e) => {
         const sel = window.getSelection();
         if (sel.isCollapsed || sel.toString().trim() === '') {
+            picker.style.display = 'none';
             picker.hidden = true;
             return;
         }
@@ -134,18 +153,23 @@ const makeHighlightDrag = function () {
         // Show picker widget
         picker.style.left = `${e.clientX + 4}px`;
         picker.style.top = `${e.clientY + 4}px`;
-        picker.hidden = false;
+        toggleColorPicker('on');
     });
 
     picker.addEventListener('click', (e) => {
-        const color = 'blue';
+        const color = e.target.getAttribute('color');
         if (!color || !clonedRange) return;
 
         const mark = document.createElement('mark');
         mark.className = `highlight highlight--${color}`;
+        /**
+         * BUG: Do not recall window.getSelection().getRangeAt(0) here
+         * because it's scoped to picker, such that `mark` would be 
+         * added to picker, not chatThread.
+         * clonedRange works because it's lexically scoped in chatThread */
         clonedRange.surroundContents(mark); // operate on the saved range, not a fresh selection
         clonedRange = null;
-        picker.hidden = true;
+        toggleColorPicker('off');
     });
 
     // function makeChipDraggable(chip) {

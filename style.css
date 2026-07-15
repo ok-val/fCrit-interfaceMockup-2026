@@ -258,6 +258,13 @@ main {
     align-self: flex-start;
 }
 
+/* Draggable ghost */
+
+drag-ghost {
+    position: fixed;
+    pointer-events: none;
+}
+
 
 /* User input */
 
@@ -312,6 +319,8 @@ main {
     /* LATER: Could use a view marque feature */
     top: -800px;
     left: -1005px;
+    /* top: 0px; */
+    /* left: 0px; */
     /* 2000x2000 canvas space */
     width: var(--canvas-width);
     height: var(--canvas-height);
@@ -358,6 +367,11 @@ canvas {
     touch-action: none;
     /* stops touch drag from selecting marqueeing elements */
     user-select: none;
+}
+
+.annotation--sunshine {
+    --main-fill: var(--sunshine);
+    background-color: var(--main-fill);
 }
 
 .annotation:active {

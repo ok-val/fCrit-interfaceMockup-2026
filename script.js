@@ -195,52 +195,66 @@ const makeHighlightDrag = function () {
 
         // console.log(rangeList);
         toggleColorPicker('off');
+        makeChipDraggable(mark);
     });
 
-    // function makeChipDraggable(chip) {
-    //     let ghost;
+    function makeChipDraggable(chip) {
+        let ghost;
 
-    //     chip.addEventListener('pointerdown', (e) => {
-    //         chip.setPointerCapture(e.pointerId);
-    //         ghost = chip.cloneNode(true);
-    //         ghost.classList.add('drag-ghost'); // position: fixed; pointer-events: none;
-    //         document.body.appendChild(ghost);
-    //     });
+        chip.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            chip.setPointerCapture(e.pointerId);
+            ghost = chip.cloneNode(true);
+            ghost.classList.add('drag-ghost');
+            document.body.appendChild(ghost);
 
-    //     chip.addEventListener('pointermove', (e) => {
-    //         if (!ghost) return;
-    //         ghost.style.left = `${e.clientX}px`;
-    //         ghost.style.top = `${e.clientY}px`;
-    //     });
+        });
 
-    //     chip.addEventListener('pointerup', (e) => {
-    //         const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-    //         const viewport = document.querySelector('.viewport');
-    //         if (viewport.contains(dropTarget)) {
-    //             createAnnotation({
-    //                 text: chip.textContent,
-    //                 color: chip.dataset.color ?? [...chip.classList].find(c => c.startsWith('highlight--'))?.replace('highlight--', ''),
-    //                 x: e.clientX, y: e.clientY, // convert to .world-local coords, accounting for current pan
-    //             });
-    //         }
-    //         ghost.remove();
-    //         ghost = null;
-    //     });
-    // }
+        chip.addEventListener('pointermove', (e) => {
+            if (!ghost) return;
+            ghost.style.left = `${e.clientX}px`;
+            ghost.style.top = `${e.clientY}px`;
+        });
 
-    // function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
-    //     const el = document.createElement('div');
-    //     el.className = `annotation annotation--${color}`;
-    //     el.textContent = text;
-    //     el.style.left = `${x}px`;
-    //     el.style.top = `${y}px`;
-    //     document.querySelector('.world').appendChild(el);
-    //     makeDraggable(el); // the function from the panning tutorial
+        chip.addEventListener('pointerup', (e) => {
+            const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+            console.log(dropTarget);
+            const viewport = document.querySelector('.viewport');
+            const color = chip.className.toString().replace('highlight highlight--', '');
+            if (viewport.contains(dropTarget)) {
+                createAnnotation({
+                    text: chip.textContent,
+                    color: color,
+                    // BUG: no idea why it doesn't drop exactly at the designated point
+                    x: e.clientX + 250,
+                    y: e.clientY + 775,
+                });
+            }
+            console.log(e.clientX, e.clientY);
+            ghost.remove();
+            ghost = null;
+        });
+    }
 
-    //     if (anchorX != null) {
-    //         // optionally draw a connecannotations
-    //     }
-    //     return el;
-    // }
+    function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
+        const el = document.createElement('div');
+        el.className = `annotation annotation--${color}`;
+        el.textContent = text;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        document.querySelector('.world').appendChild(el);
+        // make new annotation draggable
+        makeDraggable(el);
+
+        if (anchorX != null) {
+            // optionally draw a connecannotations
+        }
+        return el;
+    }
 }();
+
+// window.addEventListener('click', (e) => {
+//     // console.log(document.elementFromPoint(e.clientX, e.clientY));
+//     // console.log(e.clientX, e.clientY);
+// })
 

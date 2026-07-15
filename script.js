@@ -109,7 +109,8 @@ const makeHighlightDrag = function () {
     const chatThread = document.getElementById('chat-thread');
     const picker = document.querySelector('.color-picker'); // hidden by default
     let clonedRange = null;
-    
+    let rangeList = [];
+
     function toggleColorPicker(value = 'on' | 'off') {
         switch (value) {
             case 'on': {
@@ -128,12 +129,32 @@ const makeHighlightDrag = function () {
     toggleColorPicker('off');
 
     chatThread.addEventListener('mouseup', (e) => {
+        // e.stopPropagation();
         const sel = window.getSelection();
+
+        // Normal click || select only space
         if (sel.isCollapsed || sel.toString().trim() === '') {
-            picker.style.display = 'none';
-            picker.hidden = true;
-            return;
+            toggleColorPicker('off');
+
+            // Select mark
+            if (e.target.nodeName === "MARK") {
+                // Reset all border width then bolden current mark
+                document.querySelectorAll('mark').forEach((el) => {
+                    el.style.borderWidth = '1px';
+                });
+                const currentMark = e.target;
+                currentMark.style.borderWidth = '2px';
+                return;
+            }
+
+            if (e.target.nodeName !== "MARK") {
+                document.querySelectorAll('mark').forEach((el) => {
+                    el.style.borderWidth = '1px';
+                });
+                return;
+            }
         }
+
 
         const range = sel.getRangeAt(0);
         clonedRange = range.cloneRange();
@@ -154,6 +175,7 @@ const makeHighlightDrag = function () {
         picker.style.left = `${e.clientX + 4}px`;
         picker.style.top = `${e.clientY + 4}px`;
         toggleColorPicker('on');
+
     });
 
     picker.addEventListener('click', (e) => {
@@ -168,7 +190,10 @@ const makeHighlightDrag = function () {
          * added to picker, not chatThread.
          * clonedRange works because it's lexically scoped in chatThread */
         clonedRange.surroundContents(mark); // operate on the saved range, not a fresh selection
+        rangeList.push(clonedRange);
         clonedRange = null;
+
+        // console.log(rangeList);
         toggleColorPicker('off');
     });
 

@@ -90,7 +90,7 @@ h6 {
     --sunshine: #ffffc7;
     --lightgreen: #a5d5ac;
     --lavender: #DCD7FF;
-    --lightsalmon: #f2ba86;
+    --lightsalmon: #f7dcc1;
     --orange: #DA7F51;
 
     font-size: 12px;
@@ -215,31 +215,31 @@ main {
 .highlight--sunshine {
     --main-fill: var(--sunshine);
     background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lightgreen {
     --main-fill: var(--lightgreen);
     background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lavender {
     --main-fill: var(--lavender);
     background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lightsalmon {
     --main-fill: var(--lightsalmon);
     background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--orange {
     --main-fill: var(--orange);
     background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, var(--border-color) 50%, var(--main-fill) 50%);
+    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
     color: whitesmoke;
 }
 

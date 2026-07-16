@@ -269,6 +269,8 @@ main {
     /* background-color: var(--border-color); */
     /* border: grey dashed; */
     /* color: black; */
+
+    transition: background-color 200ms;
 }
 
 /* User input */

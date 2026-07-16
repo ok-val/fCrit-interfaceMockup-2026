@@ -185,7 +185,6 @@ const makeHighlightDrag = function () {
                 createAnnotation({
                     text: chip.textContent,
                     color: color,
-                    // BUG: no idea why it doesn't drop exactly at the designated point
                     x: e.clientX - worldRect.left - chip.getBoundingClientRect().width / 2,
                     y: e.clientY - worldRect.top - chip.getBoundingClientRect().height / 2,
                 });

@@ -1,0 +1,26 @@
+{
+  "name": "interfacedesign-2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+ "scripts": {
+   "dev": "vite",
+   "build": "vite build",
+   "preview": "vite preview"
+ },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ok-val/fCrit-interfaceMockup-2026.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ok-val/fCrit-interfaceMockup-2026/issues"
+  },
+  "homepage": "https://github.com/ok-val/fCrit-interfaceMockup-2026#readme",
+  "devDependencies": {
+    "vite": "^8.1.5"
+  }
+}

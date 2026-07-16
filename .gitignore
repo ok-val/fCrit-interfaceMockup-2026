@@ -1,2 +1,6 @@
 ref/
-tutorials/
+tests/
+node_modules/
+dist/
+
+.vercel

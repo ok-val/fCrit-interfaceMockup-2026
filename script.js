@@ -181,12 +181,13 @@ const makeHighlightDrag = function () {
             const viewport = document.querySelector('.viewport');
             const color = chip.className.toString().replace('highlight highlight--', '');
             if (viewport.contains(dropTarget)) {
+                const worldRect = document.querySelector('.world').getBoundingClientRect();
                 createAnnotation({
                     text: chip.textContent,
                     color: color,
                     // BUG: no idea why it doesn't drop exactly at the designated point
-                    x: e.clientX + 250,
-                    y: e.clientY + 775,
+                    x: e.clientX - worldRect.left - chip.getBoundingClientRect().width / 2,
+                    y: e.clientY - worldRect.top - chip.getBoundingClientRect().height / 2,
                 });
             }
             chip.style.borderWidth = '1px';

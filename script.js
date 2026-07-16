@@ -126,6 +126,63 @@ const makeHighlightDrag = function () {
         }
     }
 
+    function makeChipDraggable(chip) {
+        let ghost = null;
+
+        chip.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            chip.style.borderWidth = '2px';
+            chip.style.cursor = 'grabbing';
+            chip.setPointerCapture(e.pointerId);
+            ghost = chip.cloneNode(true);
+            ghost.classList.add('drag-ghost');
+            document.body.appendChild(ghost);
+        });
+        
+        chip.addEventListener('pointermove', (e) => {
+            if (!ghost) return;
+            console.log(chip.getBoundingClientRect().width/2);
+            // offset by half chip bounding box
+            ghost.style.left = `${e.clientX - chip.getBoundingClientRect().width/2}px`;
+            ghost.style.top = `${e.clientY - chip.getBoundingClientRect().height/2}px`;
+        });
+        
+        chip.addEventListener('pointerup', (e) => {
+            const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+            const viewport = document.querySelector('.viewport');
+            const color = chip.className.toString().replace('highlight highlight--', '');
+            if (viewport.contains(dropTarget)) {
+                createAnnotation({
+                    text: chip.textContent,
+                    color: color,
+                    // BUG: no idea why it doesn't drop exactly at the designated point
+                    x: e.clientX + 250,
+                    y: e.clientY + 775,
+                });
+            }
+            chip.style.borderWidth = '1px';
+            chip.style.cursor = 'grab';
+            ghost.remove();
+            ghost = null;
+        });
+    }
+
+    function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
+        const el = document.createElement('div');
+        el.className = `annotation annotation--${color}`;
+        el.textContent = text;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        document.querySelector('.world').appendChild(el);
+        // make new annotation draggable
+        makeDraggable(el);
+
+        if (anchorX != null) {
+            // optionally draw a connecannotations
+        }
+        return el;
+    }
+
     toggleColorPicker('off');
 
     chatThread.addEventListener('mouseup', (e) => {
@@ -137,22 +194,23 @@ const makeHighlightDrag = function () {
             toggleColorPicker('off');
 
             // Select mark
-            if (e.target.nodeName === "MARK") {
-                // Reset all border width then bolden current mark
-                document.querySelectorAll('mark').forEach((el) => {
-                    el.style.borderWidth = '1px';
-                });
-                const currentMark = e.target;
-                currentMark.style.borderWidth = '2px';
-                return;
-            }
+            // if (e.target.nodeName === "MARK") {
+            //     // Reset all border width then bolden current mark
+            //     document.querySelectorAll('mark').forEach((el) => {
+            //         el.style.borderWidth = '1px';
+            //     });
+            //     const currentMark = e.target;
+            //     currentMark.style.borderWidth = '2px';
+            //     return;
+            // }
 
-            if (e.target.nodeName !== "MARK") {
-                document.querySelectorAll('mark').forEach((el) => {
-                    el.style.borderWidth = '1px';
-                });
-                return;
-            }
+            // if (e.target.nodeName !== "MARK") {
+            //     document.querySelectorAll('mark').forEach((el) => {
+            //         el.style.borderWidth = '1px';
+            //     });
+            //     return;
+            // }
+            return;
         }
 
 
@@ -198,59 +256,9 @@ const makeHighlightDrag = function () {
         makeChipDraggable(mark);
     });
 
-    function makeChipDraggable(chip) {
-        let ghost;
+    document.querySelectorAll('mark').forEach(makeChipDraggable);
 
-        chip.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            chip.setPointerCapture(e.pointerId);
-            ghost = chip.cloneNode(true);
-            ghost.classList.add('drag-ghost');
-            document.body.appendChild(ghost);
 
-        });
-
-        chip.addEventListener('pointermove', (e) => {
-            if (!ghost) return;
-            ghost.style.left = `${e.clientX}px`;
-            ghost.style.top = `${e.clientY}px`;
-        });
-
-        chip.addEventListener('pointerup', (e) => {
-            const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-            console.log(dropTarget);
-            const viewport = document.querySelector('.viewport');
-            const color = chip.className.toString().replace('highlight highlight--', '');
-            if (viewport.contains(dropTarget)) {
-                createAnnotation({
-                    text: chip.textContent,
-                    color: color,
-                    // BUG: no idea why it doesn't drop exactly at the designated point
-                    x: e.clientX + 250,
-                    y: e.clientY + 775,
-                });
-            }
-            console.log(e.clientX, e.clientY);
-            ghost.remove();
-            ghost = null;
-        });
-    }
-
-    function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
-        const el = document.createElement('div');
-        el.className = `annotation annotation--${color}`;
-        el.textContent = text;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        document.querySelector('.world').appendChild(el);
-        // make new annotation draggable
-        makeDraggable(el);
-
-        if (anchorX != null) {
-            // optionally draw a connecannotations
-        }
-        return el;
-    }
 }();
 
 // window.addEventListener('click', (e) => {

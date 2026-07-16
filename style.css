@@ -166,7 +166,7 @@ main {
     box-shadow: 1.5px 1.5px 8px rgba(82, 82, 82, 0.459);
 }
 
-.color-picker>h5 {
+.color-picker > h5 {
     font-size: 0.75em;
     border-bottom: 1px solid lightgrey;
     font-weight: 700;
@@ -185,7 +185,7 @@ main {
     cursor: default;
 }
 
-.color-picker div>svg {
+.color-picker div > svg {
     position: relative;
     top: 4px;
     left: -4px;
@@ -210,36 +210,30 @@ main {
 
 .highlight {
     border-radius: 4px;
+    cursor: grab;
+
+    background-color: var(--main-fill);
+    border: 1px solid color-mix(in hsl, grey 70%, var(--main-fill) 30%);
 }
 
 .highlight--sunshine {
     --main-fill: var(--sunshine);
-    background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lightgreen {
     --main-fill: var(--lightgreen);
-    background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lavender {
     --main-fill: var(--lavender);
-    background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--lightsalmon {
     --main-fill: var(--lightsalmon);
-    background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
 }
 
 .highlight--orange {
     --main-fill: var(--orange);
-    background-color: var(--main-fill);
-    border: 1px solid color-mix(in hsl, black 50%, var(--main-fill) 50%);
     color: whitesmoke;
 }
 
@@ -260,11 +254,21 @@ main {
 
 /* Draggable ghost */
 
-drag-ghost {
+.drag-ghost {
     position: fixed;
     pointer-events: none;
-}
+    /* cursor: grabbing; */
 
+    /* same with an annotation */
+    font-weight: 500;
+    max-width: 32ch;
+    line-height: 1.33em;
+
+    padding: 4px 10px;
+    border-radius: 10px;
+    /* border: 1px solid var(--border-color); */
+    box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
+}
 
 /* User input */
 
@@ -369,11 +373,32 @@ canvas {
     user-select: none;
 }
 
+.annotation:active {
+    cursor: grabbing;
+}
+
 .annotation--sunshine {
-    --main-fill: var(--sunshine);
+    --main-fill: #FFFFE0;
     background-color: var(--main-fill);
 }
 
-.annotation:active {
-    cursor: grabbing;
+.annotation--lightgreen {
+    --main-fill: var(--lightgreen);
+    background-color: var(--main-fill);
+}
+
+.annotation--lavender {
+    --main-fill: var(--lavender);
+    background-color: var(--main-fill);
+}
+
+.annotation--lightsalmon {
+    --main-fill: var(--lightsalmon);
+    background-color: var(--main-fill);
+}
+
+.annotation--orange {
+    --main-fill: var(--orange);
+    background-color: var(--main-fill);
+    color: whitesmoke;
 }

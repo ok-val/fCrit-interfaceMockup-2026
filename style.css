@@ -87,7 +87,7 @@ h6 {
     --canvas-width: 2000px;
     --canvas-height: 2000px;
 
-    --sunshine: #ffffc7;
+    --sunshine: #FFFFE0;
     --lightgreen: #c7efcd;
     --lavender: #e3dfff;
     --lightsalmon: #f7dcc1;
@@ -367,6 +367,8 @@ canvas {
     border: 1px solid var(--border-color);
     box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
 
+    background-color: var(--main-fill);
+
     /* change cursor hover state to grab */
     cursor: grab;
     /* stops touch drag from scrolling the page */
@@ -380,27 +382,22 @@ canvas {
 }
 
 .annotation--sunshine {
-    --main-fill: #FFFFE0;
-    background-color: var(--main-fill);
+    --main-fill: var(--sunshine);    
 }
 
 .annotation--lightgreen {
     --main-fill: var(--lightgreen);
-    background-color: var(--main-fill);
 }
 
 .annotation--lavender {
     --main-fill: var(--lavender);
-    background-color: var(--main-fill);
 }
 
 .annotation--lightsalmon {
     --main-fill: var(--lightsalmon);
-    background-color: var(--main-fill);
 }
 
 .annotation--orange {
     --main-fill: var(--orange);
-    background-color: var(--main-fill);
     color: whitesmoke;
 }

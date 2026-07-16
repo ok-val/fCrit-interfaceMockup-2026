@@ -41,6 +41,9 @@ function makeDraggable(el) {
         e.stopPropagation();
         // Specify the element as a capture target for future pointer events
         el.setPointerCapture(e.pointerId);
+        el.style.borderWidth = '2px';
+        el.style.borderColor = '#6a655f';
+
         // Get the bounding rectangle of el
         const rect = el.getBoundingClientRect();
         // return the relative offset based on pointerdown
@@ -65,8 +68,17 @@ function makeDraggable(el) {
 
         el.style.left = `${newLeft}px`;
         el.style.top = `${newTop}px`;
-
     });
+
+    el.addEventListener('pointerup', (e) => {
+        el.style.borderWidth = '1px';
+        el.style.borderColor = '';
+    });
+
+    el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        // console.log('yo');
+    })
 }
 
 document.querySelectorAll('.annotation').forEach(makeDraggable);
@@ -136,18 +148,35 @@ const makeHighlightDrag = function () {
             chip.setPointerCapture(e.pointerId);
             ghost = chip.cloneNode(true);
             ghost.classList.add('drag-ghost');
+            ghost.style.backgroundColor = '#cbcbcb';
+            ghost.style.border = '2px dashed grey';
             document.body.appendChild(ghost);
         });
-        
+
         chip.addEventListener('pointermove', (e) => {
             if (!ghost) return;
-            console.log(chip.getBoundingClientRect().width/2);
+
+            const chatThread = document.getElementById('chat-thread');
+            const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+            const viewport = document.querySelector('.viewport');
+            // const chatThread = document.querySelector('.chatThread');
             // offset by half chip bounding box
-            ghost.style.left = `${e.clientX - chip.getBoundingClientRect().width/2}px`;
-            ghost.style.top = `${e.clientY - chip.getBoundingClientRect().height/2}px`;
+            ghost.style.left = `${e.clientX - chip.getBoundingClientRect().width / 2}px`;
+            ghost.style.top = `${e.clientY - chip.getBoundingClientRect().height / 2}px`;
+
+            if (viewport.contains(dropTarget)) {
+                ghost.style.backgroundColor = '';
+                ghost.style.border = '2px dashed grey';
+            }
+
+            if (chatThread.contains(dropTarget)) {
+                ghost.style.backgroundColor = '#cbcbcb';
+                ghost.style.border = '2px dashed grey';
+            }
         });
-        
+
         chip.addEventListener('pointerup', (e) => {
+            e.stopPropagation();
             const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
             const viewport = document.querySelector('.viewport');
             const color = chip.className.toString().replace('highlight highlight--', '');
@@ -162,7 +191,15 @@ const makeHighlightDrag = function () {
             }
             chip.style.borderWidth = '1px';
             chip.style.cursor = 'grab';
-            ghost.remove();
+
+            // BUG: selection ends in another mark
+            try {
+                ghost.remove();
+            } catch (error) {
+                ghost = undefined;
+            }
+
+            // ghost.remove();
             ghost = null;
         });
     }
@@ -185,9 +222,28 @@ const makeHighlightDrag = function () {
 
     toggleColorPicker('off');
 
-    chatThread.addEventListener('mouseup', (e) => {
-        // e.stopPropagation();
+    // Highlight selection
+
+    // Show not-allowed cursor when selection in middle of marks
+    chatThread.addEventListener('pointermove', (e) => {
         const sel = window.getSelection();
+        let landedMark;
+        if (!sel.isCollapsed && e.target.nodeName === "MARK") {
+            landedMark = e.target;
+            landedMark.style.cursor = 'not-allowed';
+        };
+
+    })
+
+    chatThread.addEventListener('mouseup', (e) => {
+        const sel = window.getSelection();
+        // Reset cursor for marks
+        document.querySelectorAll('mark').forEach((m) => m.style.cursor = 'grab');
+
+        // If selection ends in a mark, return
+        if (e.target.nodeName === "MARK") {
+            return;
+        }
 
         // Normal click || select only space
         if (sel.isCollapsed || sel.toString().trim() === '') {
@@ -213,6 +269,10 @@ const makeHighlightDrag = function () {
             return;
         }
 
+        // if (!sel.isCollapsed && e.target.nodeName === "MARK") {
+        //     console.log('wow');
+        // }
+
 
         const range = sel.getRangeAt(0);
         clonedRange = range.cloneRange();
@@ -236,6 +296,7 @@ const makeHighlightDrag = function () {
 
     });
 
+    // Picker workflow
     picker.addEventListener('click', (e) => {
         const color = e.target.getAttribute('color');
         if (!color || !clonedRange) return;
@@ -247,7 +308,9 @@ const makeHighlightDrag = function () {
          * because it's scoped to picker, such that `mark` would be 
          * added to picker, not chatThread.
          * clonedRange works because it's lexically scoped in chatThread */
-        clonedRange.surroundContents(mark); // operate on the saved range, not a fresh selection
+
+        // operate on the saved range, not a fresh selection
+        clonedRange.surroundContents(mark);
         rangeList.push(clonedRange);
         clonedRange = null;
 
@@ -261,6 +324,8 @@ const makeHighlightDrag = function () {
 
 }();
 
+
+// DEBUGGING TOOL:
 // window.addEventListener('click', (e) => {
 //     // console.log(document.elementFromPoint(e.clientX, e.clientY));
 //     // console.log(e.clientX, e.clientY);

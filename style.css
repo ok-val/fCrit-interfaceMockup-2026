@@ -88,8 +88,8 @@ h6 {
     --canvas-height: 2000px;
 
     --sunshine: #ffffc7;
-    --lightgreen: #a5d5ac;
-    --lavender: #DCD7FF;
+    --lightgreen: #c7efcd;
+    --lavender: #e3dfff;
     --lightsalmon: #f7dcc1;
     --orange: #DA7F51;
 
@@ -257,17 +257,18 @@ main {
 .drag-ghost {
     position: fixed;
     pointer-events: none;
-    /* cursor: grabbing; */
 
-    /* same with an annotation */
     font-weight: 500;
     max-width: 32ch;
     line-height: 1.33em;
 
     padding: 4px 10px;
     border-radius: 10px;
-    /* border: 1px solid var(--border-color); */
     box-shadow: 1.5px 1.5px 4px rgba(128, 128, 128, 0.459);
+
+    /* background-color: var(--border-color); */
+    /* border: grey dashed; */
+    /* color: black; */
 }
 
 /* User input */
@@ -278,7 +279,8 @@ main {
 }
 
 #chat-input {
-    padding: var(--dialogue-padding);
+    /* padding: var(--dialogue-padding); */
+    padding: 10px 14px;
     flex: 1 1 100%;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -290,7 +292,7 @@ main {
 }
 
 #chat-input:focus {
-    outline: 2px solid rgb(106, 101, 95);
+    outline: 2px solid #6a655f;
     outline-offset: -1px;
 }
 

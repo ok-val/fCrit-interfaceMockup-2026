@@ -34,6 +34,25 @@ const drawGrid = function () {
 }();
 
 
+window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+})
+
+function addTooltip(elem, type = 'chip' | 'markArtefact') {
+    // Add a tooltip for each chip in chatThread
+    const tooltip = document.createElement('span');
+    tooltip.classList.add('tooltip--text');
+    switch (type) {
+        case 'chip':
+            tooltip.textContent = "Drag me!";
+            break;
+        case 'markArtefact':
+            tooltip.textContent = "Mark on artefact!";
+            break;
+    }
+    elem.appendChild(tooltip);
+}
+
 function makeDraggable(el) {
     let offsetX, offsetY;
 
@@ -74,11 +93,6 @@ function makeDraggable(el) {
         el.style.borderWidth = '1px';
         el.style.borderColor = '';
     });
-
-    el.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        // console.log('yo');
-    })
 }
 
 document.querySelectorAll('.annotation').forEach(makeDraggable);
@@ -117,6 +131,24 @@ const makeInsightWindowPannable = function () {
 }();
 
 
+// Toggle picker 
+
+function toggleColorPicker(picker, value = 'on' | 'off') {
+    switch (value) {
+        case 'on': {
+            // picker.style.display = 'flex';
+            picker.hidden = false;
+            break;
+        }
+        case 'off': {
+            // picker.style.display = 'none';
+            picker.hidden = true;
+            break;
+        }
+    }
+}
+
+
 // Highlighted marker
 
 const makeHighlightDrag = function () {
@@ -124,21 +156,6 @@ const makeHighlightDrag = function () {
     const picker = document.querySelector('.color-picker'); // hidden by default
     let clonedRange = null;
     let rangeList = [];
-
-    function toggleColorPicker(value = 'on' | 'off') {
-        switch (value) {
-            case 'on': {
-                picker.style.display = 'flex';
-                picker.hidden = false;
-                break;
-            }
-            case 'off': {
-                picker.style.display = 'none';
-                picker.hidden = true;
-                break;
-            }
-        }
-    }
 
     function makeChipDraggable(chip) {
         let ghost = null;
@@ -149,6 +166,11 @@ const makeHighlightDrag = function () {
             chip.style.cursor = 'grabbing';
             chip.setPointerCapture(e.pointerId);
             ghost = chip.cloneNode(true);
+            /**
+             * BUG: remove the tooltip--text from ghost,
+             * leaving the original one intact. 
+             * */
+            ghost.querySelector('span').remove();
             ghost.classList.add('drag-ghost');
             ghost.style.backgroundColor = '#cbcbcb';
             ghost.style.border = '2px dashed grey';
@@ -182,10 +204,12 @@ const makeHighlightDrag = function () {
             const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
             const viewport = document.querySelector('.viewport');
             const color = chip.className.toString().replace('highlight highlight--', '');
+
+
             if (viewport.contains(dropTarget)) {
                 const worldRect = document.querySelector('.world').getBoundingClientRect();
                 createAnnotation({
-                    text: chip.textContent,
+                    text: ghost.textContent,
                     color: color,
                     x: e.clientX - worldRect.left - chip.getBoundingClientRect().width / 2,
                     y: e.clientY - worldRect.top - chip.getBoundingClientRect().height / 2,
@@ -201,9 +225,10 @@ const makeHighlightDrag = function () {
                 ghost = undefined;
             }
 
-            // ghost.remove();
             ghost = null;
         });
+
+        addTooltip(chip, 'chip');
     }
 
     function createAnnotation({ text, color, x, y, anchorX, anchorY }) {
@@ -222,7 +247,7 @@ const makeHighlightDrag = function () {
         return el;
     }
 
-    toggleColorPicker('off');
+    toggleColorPicker(picker, 'off');
 
     // Highlight selection
 
@@ -249,7 +274,7 @@ const makeHighlightDrag = function () {
 
         // Normal click || select only space
         if (sel.isCollapsed || sel.toString().trim() === '') {
-            toggleColorPicker('off');
+            toggleColorPicker(picker, 'off');
 
             // Select mark
             // if (e.target.nodeName === "MARK") {
@@ -292,15 +317,16 @@ const makeHighlightDrag = function () {
          */
 
         // Show picker widget
+        picker.querySelector('h5').textContent = "Highlight a dialogue insight";
         picker.style.left = `${e.clientX + 4}px`;
         picker.style.top = `${e.clientY + 4}px`;
-        toggleColorPicker('on');
+        toggleColorPicker(picker, 'on');
 
     });
 
     // Picker workflow
     picker.addEventListener('click', (e) => {
-        const color = e.target.getAttribute('color');
+        const color = e.target.dataset.color;
         if (!color || !clonedRange) return;
 
         const mark = document.createElement('mark');
@@ -317,13 +343,11 @@ const makeHighlightDrag = function () {
         clonedRange = null;
 
         // console.log(rangeList);
-        toggleColorPicker('off');
+        toggleColorPicker(picker, 'off');
         makeChipDraggable(mark);
     });
 
     document.querySelectorAll('mark').forEach(makeChipDraggable);
-
-
 }();
 
 
@@ -368,10 +392,10 @@ const makeFreehandHighlighter = function () {
     // Reset "used colors" once the draft is sent (Enter, no shift)
 
     function resetChatInput(e) {
-            e.preventDefault();
-            chatInput.textContent = '';
-            usedColorsThisDraft.clear();
-            lastRange = null;
+        e.preventDefault();
+        chatInput.textContent = '';
+        usedColorsThisDraft.clear();
+        lastRange = null;
 
     }
 
@@ -398,14 +422,16 @@ const makeFreehandHighlighter = function () {
         });
     }
 
-    function openPicker() {
-        renderPicker();
-        picker.hidden = false;
-    }
+    // function openPicker() {
+    //     renderPicker();
+    //     picker.style.left = `10px`;
+    //     picker.style.bottom = `12px`;
+    //     picker.hidden = false;
+    // }
 
-    function closePicker() {
-        picker.hidden = true;
-    }
+    // function closePicker() {
+    //     picker.hidden = true;
+    // }
 
     toggleBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -416,9 +442,15 @@ const makeFreehandHighlighter = function () {
         }
 
         if (picker.hidden) {
-            openPicker();
+            // openPicker();
+            renderPicker();
+            picker.querySelector('h5').textContent = "Mark an artefact feature";
+            picker.style.left = `10px`;
+            picker.style.bottom = `10px`;
+            toggleColorPicker(picker, 'on');
         } else {
-            closePicker();
+            // closePicker();
+            toggleColorPicker(picker, 'off');
         }
     });
 
@@ -426,13 +458,13 @@ const makeFreehandHighlighter = function () {
         const swatch = e.target.closest('.color-picker--swatch');
         if (!swatch || swatch.classList.contains('is-disabled')) return;
         arm(swatch.dataset.color);
-        closePicker();
+        toggleColorPicker(picker, 'off');;
     });
 
     document.addEventListener('pointerdown', (e) => {
         if (picker.hidden) return;
         if (picker.contains(e.target) || toggleBtn.contains(e.target)) return;
-        closePicker();
+        toggleColorPicker(picker, 'off');;
     });
 
     // --- arm / disarm ---
@@ -450,7 +482,7 @@ const makeFreehandHighlighter = function () {
         toggleBtn.setAttribute('aria-pressed', 'false');
         viewport.classList.remove('armed');
         document.body.classList.remove('freehand-drawing');
-        closePicker();
+        toggleColorPicker(picker, 'off');;
     }
 
     // --- drawing on the artefact ---
@@ -532,8 +564,9 @@ const makeFreehandHighlighter = function () {
 
         const chip = document.createElement('span');
         chip.className = `chip chip--${color}`;
+        chip.dataset.color = color;
         chip.contentEditable = 'false';
-        chip.textContent = '● this part';
+        chip.textContent = ' this part';
 
         range.deleteContents();
         range.insertNode(chip);

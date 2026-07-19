@@ -20,40 +20,40 @@
 <body>
     <main>
         <section aria-label="Conversation space" id="canvas--conversation">
+            <menu class="color-picker" hidden>
+                <h5></h5>
+                <div class="color-picker--swatch" data-color="sunshine">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="#ffffc7">
+                        <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                    </svg>Sunshine
+                </div>
+                <div class="color-picker--swatch" data-color="lightgreen">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="#a5d5ac">
+                        <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                    </svg>Light green
+                </div>
+                <div class="color-picker--swatch" data-color="lavender">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="#c4bbfc">
+                        <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                    </svg>Lavender
+                </div>
+                <div class="color-picker--swatch" data-color="lightsalmon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="#f2ba86">
+                        <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                    </svg>Salmon
+                </div>
+                <div class="color-picker--swatch" data-color="orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="#DA7F51">
+                        <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                    </svg>Tomato
+                </div>
+            </menu>
             <section aria-label="Chat thread" id="window--chat-thread">
-                <menu class="color-picker" hidden>
-                    <h5>Mark a feature on the artefact</h5>
-                    <div class="color-picker--swatch" data-color="sunshine">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                            fill="#ffffc7">
-                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
-                        </svg>Sunshine
-                    </div>
-                    <div class="color-picker--swatch" data-color="lightgreen">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                            fill="#a5d5ac">
-                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
-                        </svg>Light green
-                    </div>
-                    <div class="color-picker--swatch" data-color="lavender">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                            fill="#c4bbfc">
-                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
-                        </svg>Lavender
-                    </div>
-                    <div class="color-picker--swatch" data-color="lightsalmon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                            fill="#f2ba86">
-                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
-                        </svg>Salmon
-                    </div>
-                    <div class="color-picker--swatch" data-color="orange">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                            fill="#DA7F51">
-                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
-                        </svg>Tomato
-                    </div>
-                </menu>
                 <ol id="chat-thread">
                     <li class="turn--user">Hi! I like this design.</li>
                     <li class="turn--ai">What specifically attracts you to this chair design? I notice it has those
@@ -126,14 +126,12 @@
                 <div id="chat-input" contenteditable="true" data-placeholder="What can you see?"></div>
 
                 <div class="input-toolbar">
-                    <div id="freehand-toggle" class="freehand-toolbar-btn" aria-pressed="false">
+                    <div id="freehand-toggle" class="buttons" aria-pressed="false">
                         <span class="material-symbols-outlined">
                             brush
                         </span>
+                        <span class="tooltip--text">Mark on artefact</span>
                     </div>
-                    <span class="input-toolbar-hint">
-                        <!-- Draw on the artefact to reference a feature -->
-                    </span>
                 </div>
             </form>
         </section>

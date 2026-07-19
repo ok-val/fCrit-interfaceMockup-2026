@@ -95,6 +95,7 @@ const makeInsightWindowPannable = function () {
     let startX, startY;
 
     viewport.addEventListener('pointerdown', (e) => {
+        if (viewport.classList.contains('armed')) return;
         viewport.setPointerCapture(e.pointerId);
         viewport.classList.add('panning');
         startX = e.clientX - panX;
@@ -109,6 +110,7 @@ const makeInsightWindowPannable = function () {
     });
 
     viewport.addEventListener('pointerup', (e) => {
+        if (!viewport.hasPointerCapture(e.pointerId)) return;
         viewport.releasePointerCapture(e.pointerId);
         viewport.classList.remove('panning');
     });
@@ -322,6 +324,232 @@ const makeHighlightDrag = function () {
     document.querySelectorAll('mark').forEach(makeChipDraggable);
 
 
+}();
+
+
+// Freehand artefact-highlighter
+
+const makeFreehandHighlighter = function () {
+    const chatForm = document.getElementById('window--chat-input');
+    const chatInput = document.getElementById('chat-input');
+    const toggleBtn = document.getElementById('freehand-toggle');
+    const picker = document.getElementById('freehand-picker');
+    const viewport = document.querySelector('.viewport');
+    const world = document.querySelector('.world');
+    const freehandCanvas = document.getElementById('freehand-canvas');
+    const ctx = freehandCanvas.getContext('2d');
+
+    // Saturated stroke colors (pastel fill vars are too light to read on the image)
+    const STROKE_COLOR = {
+        sunshine: '#e0b400',
+        lightgreen: '#4caf50',
+        lavender: '#8a6fd8',
+        lightsalmon: '#e8813f',
+        orange: '#b8552f',
+    };
+
+    const usedColorsThisDraft = new Set();
+    let armedColor = null;
+    let lastRange = null;
+    let points = [];
+    let isDrawing = false;
+
+    // --- caret tracking in the compose box ---
+
+    document.addEventListener('selectionchange', () => {
+        const sel = window.getSelection();
+        if (sel.rangeCount === 0) return;
+        const range = sel.getRangeAt(0);
+        if (chatInput.contains(range.startContainer)) {
+            lastRange = range.cloneRange();
+        }
+    });
+
+    // Reset "used colors" once the draft is sent (Enter, no shift)
+
+    function resetChatInput(e) {
+            e.preventDefault();
+            chatInput.textContent = '';
+            usedColorsThisDraft.clear();
+            lastRange = null;
+
+    }
+
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            resetChatInput(e);
+        }
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target !== chatInput && chatInput.textContent === '') {
+            resetChatInput(e);
+        }
+    })
+
+    // --- color popover ---
+
+    function renderPicker() {
+        picker.querySelectorAll('.color-picker--swatch').forEach((swatch) => {
+            const color = swatch.dataset.color;
+            const disabled = usedColorsThisDraft.has(color);
+            swatch.classList.toggle('is-disabled', disabled);
+            swatch.setAttribute('aria-disabled', String(disabled));
+        });
+    }
+
+    function openPicker() {
+        renderPicker();
+        picker.hidden = false;
+    }
+
+    function closePicker() {
+        picker.hidden = true;
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // If toggleBtn pressed when armed, disarm and return
+        if (armedColor) {
+            disarm();
+            return;
+        }
+
+        if (picker.hidden) {
+            openPicker();
+        } else {
+            closePicker();
+        }
+    });
+
+    picker.addEventListener('click', (e) => {
+        const swatch = e.target.closest('.color-picker--swatch');
+        if (!swatch || swatch.classList.contains('is-disabled')) return;
+        arm(swatch.dataset.color);
+        closePicker();
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+        if (picker.hidden) return;
+        if (picker.contains(e.target) || toggleBtn.contains(e.target)) return;
+        closePicker();
+    });
+
+    // --- arm / disarm ---
+
+    function arm(color) {
+        armedColor = color;
+        toggleBtn.setAttribute('aria-pressed', 'true');
+        // Disable panning while armed
+        viewport.classList.add('armed');
+        document.body.classList.add('freehand-drawing');
+    }
+
+    function disarm() {
+        armedColor = null;
+        toggleBtn.setAttribute('aria-pressed', 'false');
+        viewport.classList.remove('armed');
+        document.body.classList.remove('freehand-drawing');
+        closePicker();
+    }
+
+    // --- drawing on the artefact ---
+
+    function toWorldPoint(e) {
+        const worldRect = world.getBoundingClientRect();
+        return {
+            x: e.clientX - worldRect.left,
+            y: e.clientY - worldRect.top,
+        };
+    }
+
+    function midpoint(a, b) {
+        return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    }
+
+    freehandCanvas.addEventListener('pointerdown', (e) => {
+        if (!armedColor) return;
+        e.preventDefault();
+        freehandCanvas.setPointerCapture(e.pointerId);
+        isDrawing = true;
+        points = [toWorldPoint(e)];
+
+        ctx.strokeStyle = STROKE_COLOR[armedColor];
+        ctx.globalAlpha = 0.55;
+        ctx.lineWidth = 28;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+    });
+
+    freehandCanvas.addEventListener('pointermove', (e) => {
+        if (!isDrawing) return;
+        points.push(toWorldPoint(e));
+
+        const n = points.length;
+        if (n < 3) return;
+
+        const p0 = points[n - 3];
+        const p1 = points[n - 2];
+        const p2 = points[n - 1];
+        const start = midpoint(p0, p1);
+        const end = midpoint(p1, p2);
+
+        ctx.beginPath();
+        ctx.moveTo(start.x, start.y);
+        ctx.quadraticCurveTo(p1.x, p1.y, end.x, end.y);
+        ctx.stroke();
+    });
+
+    freehandCanvas.addEventListener('pointerup', (e) => {
+        if (!isDrawing) return;
+        isDrawing = false;
+        freehandCanvas.releasePointerCapture(e.pointerId);
+
+        const color = armedColor;
+        if (points.length >= 1) {
+            usedColorsThisDraft.add(color);
+            insertChip(color);
+        }
+        points = [];
+        disarm();
+    });
+
+    // --- inline chip insertion ---
+
+    function insertChip(color) {
+        chatInput.focus();
+
+        let range = lastRange;
+        if (!range || !chatInput.contains(range.startContainer)) {
+            range = document.createRange();
+            range.selectNodeContents(chatInput);
+            range.collapse(false);
+        }
+
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        const chip = document.createElement('span');
+        chip.className = `chip chip--${color}`;
+        chip.contentEditable = 'false';
+        chip.textContent = '● this part';
+
+        range.deleteContents();
+        range.insertNode(chip);
+
+        const space = document.createTextNode(' ');
+        range.setStartAfter(chip);
+        range.collapse(true);
+        range.insertNode(space);
+        range.setStartAfter(space);
+        range.collapse(true);
+
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        lastRange = range.cloneRange();
+    }
 }();
 
 

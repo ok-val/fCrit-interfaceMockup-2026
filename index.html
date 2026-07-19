@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=brush" />
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
@@ -19,32 +22,32 @@
         <section aria-label="Conversation space" id="canvas--conversation">
             <section aria-label="Chat thread" id="window--chat-thread">
                 <menu class="color-picker" hidden>
-                    <h5>Highlighter color</h5>
-                    <div id="color-picker--sunshine" color="sunshine">
+                    <h5>Mark a feature on the artefact</h5>
+                    <div class="color-picker--swatch" data-color="sunshine">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
                             fill="#ffffc7">
                             <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                         </svg>Sunshine
                     </div>
-                    <div id="color-picker--light-green" color="lightgreen">
+                    <div class="color-picker--swatch" data-color="lightgreen">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
                             fill="#a5d5ac">
                             <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                         </svg>Light green
                     </div>
-                    <div id="color-picker--lavender" color="lavender">
+                    <div class="color-picker--swatch" data-color="lavender">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
                             fill="#c4bbfc">
                             <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                         </svg>Lavender
                     </div>
-                    <div id="color-picker--light-salmon" color="lightsalmon">
+                    <div class="color-picker--swatch" data-color="lightsalmon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
                             fill="#f2ba86">
                             <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                         </svg>Salmon
                     </div>
-                    <div id="color-picker--orange" color="orange">
+                    <div class="color-picker--swatch" data-color="orange">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
                             fill="#DA7F51">
                             <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
@@ -56,34 +59,82 @@
                     <li class="turn--ai">What specifically attracts you to this chair design? I notice it has those
                         beautifully bent wood elements that create a continuous flowing line from the backrest to the
                         armrests.</li>
-                    <li class="turn--user">I’m drawn to how <mark class="highlight highlight--sunshine">noodle-y</mark> it looks. It’s playful yet elegant!</li>
+                    <li class="turn--user">I’m drawn to how <mark class="highlight highlight--sunshine">noodle-y</mark>
+                        it looks. It’s playful yet elegant!</li>
                     <li class="turn--ai">I love your description of it as “noodle-y”! The way the wood <mark
                             class="highlight highlight--sunshine">bends and flows</mark>
                         without interruption creates that playful character you’ve noticed, while still maintaining an
-                        elegant presence. Do you think it's the <mark
-                            class="highlight highlight--lightgreen">smoothness of the curves</mark> or the <mark class="highlight highlight--lightgreen">rhythmic repetition</mark> of
+                        elegant presence. Do you think it's the <mark class="highlight highlight--lightgreen">smoothness
+                            of the curves</mark> or the <mark class="highlight highlight--lightgreen">rhythmic
+                            repetition</mark> of
                         the lines that gives it that playful quality?</li>
                     <li class="turn--user">I think it’s in the way the <mark
                             class="highlight highlight--lavender">curved lines traverse across different parts of
-                        the chair, tying it together to create a story</mark>. What do you think about this linear narrative?
+                            the chair, tying it together to create a story</mark>. What do you think about this linear
+                        narrative?
                     </li>
                     <li class="turn--ai">That’s very perceptive! Those curved lines do more than just connect physical
                         elements—they create a visual journey through the chair's form. It's almost as if the designer
-                        wanted us to experience the chair as a <mark
-                            class="highlight highlight--lightsalmon">single gesture</mark> rather than separate parts. Do you feel
+                        wanted us to experience the chair as a <mark class="highlight highlight--lightsalmon">single
+                            gesture</mark> rather than separate parts. Do you feel
                         this narrative quality makes the chair more inviting or more sculptural?</li>
                     <li class="turn--user">This narrative definitely invites closer inspection. There's something else
                         about the nature of curve that feels amiable. I can't quite find the right word.</li>
                     <li class="turn--ai">There's a certain warmth and hospitality in organic curves. Perhaps what you’re
-                        sensing might be described as “<mark
-                            class="highlight highlight--orange">haptic invitation</mark>”—the way these gentle curves seem to welcome
+                        sensing might be described as “<mark class="highlight highlight--orange">haptic
+                            invitation</mark>”—the way these gentle curves seem to welcome
                         touch and interaction. The curves have a natural ergonomic quality that resonates with our
                         bodies and movement patterns, creating an immediate sense of comfort even before physical
                         contact.</li>
                 </ol>
             </section>
             <form action="" id="window--chat-input">
-                <textarea name="" id="chat-input" placeholder="What can you see?"></textarea>
+                <menu class="color-picker" id="freehand-picker" hidden>
+                    <h5>Mark a feature on the artefact</h5>
+                    <div class="color-picker--swatch" data-color="sunshine">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#ffffc7">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Sunshine
+                    </div>
+                    <div class="color-picker--swatch" data-color="lightgreen">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#a5d5ac">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Light green
+                    </div>
+                    <div class="color-picker--swatch" data-color="lavender">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#c4bbfc">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Lavender
+                    </div>
+                    <div class="color-picker--swatch" data-color="lightsalmon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#f2ba86">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Salmon
+                    </div>
+                    <div class="color-picker--swatch" data-color="orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                            fill="#DA7F51">
+                            <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
+                        </svg>Tomato
+                    </div>
+                </menu>
+
+                <div id="chat-input" contenteditable="true" data-placeholder="What can you see?"></div>
+
+                <div class="input-toolbar">
+                    <div id="freehand-toggle" class="freehand-toolbar-btn" aria-pressed="false">
+                        <span class="material-symbols-outlined">
+                            brush
+                        </span>
+                    </div>
+                    <span class="input-toolbar-hint">
+                        <!-- Draw on the artefact to reference a feature -->
+                    </span>
+                </div>
             </form>
         </section>
 
@@ -91,6 +142,7 @@
             <figure class="viewport">
                 <div class="world">
                     <canvas id="gridCanvas" width="2000" height="2000"></canvas>
+                    <canvas id="freehand-canvas" width="2000" height="2000"></canvas>
                     <img src="./img/furnitureImage-bw.jpg" draggable="false" alt="Chair">
                     <!-- <svg class="world--grid"></svg> -->
                     <div class="annotation annotation--sunshine" style="left: 1080px; top: 970px;">
@@ -111,8 +163,7 @@
                     <div class="annotation annotation--lightsalmon" style="left: 1290px; top: 1540px;">
                         single gesture, linear narrative
                     </div>
-                    <div class="annotation annotation annotation--orange"
-                        style="left: 1420px; top: 1590px;">
+                    <div class="annotation annotation annotation--orange" style="left: 1420px; top: 1590px;">
                         haptic invitation
                     </div>
                 </div>

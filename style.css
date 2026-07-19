@@ -82,6 +82,7 @@ h6 {
 :root {
     --grid-gap: 4px;
     --border-color: #cbcbcb;
+    --btn-hover-color: #ededed;
     --border-radius: 6px;
     --dialogue-padding: 8px 14px;
     --canvas-width: 2000px;
@@ -155,15 +156,17 @@ main {
     border-radius: var(--border-radius);
     outline: 1px solid var(--border-color);
 
-    /* top stack */
-    z-index: 1;
+    z-index: 2;
 
-    /* makeHighlightDrag handles dipslay toggling */
-    /* display: flex; */
+    display: flex;
     gap: 1px;
     flex-direction: column;
 
     box-shadow: 1.5px 1.5px 8px rgba(82, 82, 82, 0.459);
+}
+
+.color-picker[hidden] {
+    display: none;
 }
 
 .color-picker > h5 {
@@ -171,27 +174,31 @@ main {
     border-bottom: 1px solid lightgrey;
     font-weight: 700;
     color: gray;
-    padding: 0px 8px;
+    padding: 4px 8px;
+    white-space: nowrap;
 }
 
-.color-picker div {
+.color-picker--swatch {
     position: relative;
     padding: 4px 8px;
     width: auto;
-}
-
-.color-picker div:hover {
-    background-color: rgb(229, 229, 229);
     cursor: default;
 }
 
-.color-picker div > svg {
+.color-picker--swatch:hover {
+    background-color: rgb(229, 229, 229);
+}
+
+.color-picker--swatch > svg {
     position: relative;
     top: 4px;
     left: -4px;
     display: inline-block;
-    /* outline: 1px solid var(--border-color); */
-    /* border-radius: 4px; */
+}
+
+.color-picker--swatch.is-disabled {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 /* Pseudo-el runs short of color enumeration */
@@ -276,20 +283,23 @@ main {
 /* User input */
 
 #window--chat-input {
+    position: relative;
     display: flex;
     flex-direction: column;
 }
 
 #chat-input {
     /* padding: var(--dialogue-padding); */
-    padding: 10px 14px;
     flex: 1 1 100%;
+    background-color: white;
+    padding: 12px 14px 24px 14px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
 
     box-sizing: border-box;
     resize: none;
 
+    width: 100%;
     font-size: inherit;
 }
 
@@ -298,6 +308,55 @@ main {
     outline-offset: -1px;
 }
 
+#chat-input:empty::before {
+    content: attr(data-placeholder);
+    color: #9b9b9b;
+}
+
+.input-toolbar {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+
+    bottom: 10px;
+    left: 14px;
+}
+
+.material-symbols-outlined {
+    color: grey;
+    scale: 0.85;
+}
+
+#freehand-toggle {
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-items: center;
+    border-radius: var(--border-radius);
+    user-select: none;
+}
+
+#freehand-toggle:hover {
+    background-color: var(--btn-hover-color);
+    cursor: pointer;
+}
+
+#freehand-toggle:active {
+    background-color: rgb(224, 224, 224);
+    cursor: pointer;
+}
+
+#freehand-canvas {
+    z-index: 1;
+    opacity: 50%;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.viewport.armed #freehand-canvas {
+    pointer-events: auto;
+}
 
 /* Insight window config */
 
@@ -384,7 +443,7 @@ canvas {
 }
 
 .annotation--sunshine {
-    --main-fill: var(--sunshine);    
+    --main-fill: var(--sunshine);
 }
 
 .annotation--lightgreen {

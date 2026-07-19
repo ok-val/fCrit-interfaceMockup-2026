@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
- "scripts": {
-   "dev": "vite",
-   "build": "vite build",
-   "preview": "vite preview"
- },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ok-val/fCrit-interfaceMockup-2026.git"
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ok-val/fCrit-interfaceMockup-2026#readme",
   "devDependencies": {
+    "vercel": "^56.3.2",
     "vite": "^8.1.5"
   }
 }

@@ -88,6 +88,8 @@ h6 {
     --canvas-width: 2000px;
     --canvas-height: 2000px;
 
+    --chat-thread-bg-color: #F5F4F0;
+
     --sunshine: #FFFFE0;
     --lightgreen: #c7efcd;
     --lavender: #e3dfff;
@@ -110,8 +112,36 @@ main {
     grid-template-columns: minmax(66ch, 95ch) minmax(300px, 1fr);
 }
 
+header {
+    position: absolute;
+    padding: 20px 20px;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+
+    display: grid;
+    grid-template-columns: 8ch 16ch;
+
+    color: grey;
+    background-color: var(--chat-thread-bg-color);
+
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border: 1px solid var(--border-color);
+}
+
+header h1 {
+    display: inline-block;
+    font-size: 2rem;
+}
+
+header h4 {
+    display: inline-block;
+    font-size: 0.75rem;
+    line-height: 0.8rem;
+}
+
 
 #canvas--conversation {
+    position: relative;
     display: grid;
     grid-template-rows: 10fr 1fr;
     gap: var(--grid-gap);
@@ -120,7 +150,7 @@ main {
 /* Chat thread */
 
 #window--chat-thread {
-    background-color: #F5F4F0;
+    background-color: var(--chat-thread-bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 20px 20px;

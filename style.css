@@ -231,6 +231,10 @@ header h4 {
     pointer-events: none;
 }
 
+.color-picker--swatch__none {
+    border-top: 1px solid lightgrey;
+}
+
 /* Pseudo-el runs short of color enumeration */
 
 /* .color-picker div::before {
@@ -252,6 +256,8 @@ header h4 {
 
     background-color: var(--main-fill);
     border: 1px solid color-mix(in hsl, grey 70%, var(--main-fill) 30%);
+
+    transition: background-color 100ms;
 }
 
 .highlight--sunshine {
@@ -278,7 +284,7 @@ header h4 {
 .highlight:hover .tooltip--text {
     visibility: visible;
     opacity: 1;
-    top: 125%;
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -333,6 +339,9 @@ header h4 {
 .drag-ghost {
     position: fixed;
     pointer-events: none;
+
+    transform: rotate(-4deg);
+    transition: transform 100ms;
 
     font-weight: 500;
     max-width: 32ch;

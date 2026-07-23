@@ -156,12 +156,16 @@ const makeHighlightDrag = function () {
     const picker = document.querySelector('.color-picker'); // hidden by default
     let clonedRange = null;
     let rangeList = [];
+    let activeChip = null;
 
     function makeChipDraggable(chip) {
         let ghost = null;
+        let downX, downY;
 
         chip.addEventListener('pointerdown', (e) => {
             e.preventDefault();
+            downX = e.clientX;
+            downY = e.clientY;
             chip.style.borderWidth = '2px';
             chip.style.cursor = 'grabbing';
             chip.setPointerCapture(e.pointerId);
@@ -214,6 +218,14 @@ const makeHighlightDrag = function () {
                     x: e.clientX - worldRect.left - chip.getBoundingClientRect().width / 2,
                     y: e.clientY - worldRect.top - chip.getBoundingClientRect().height / 2,
                 });
+            } else if (Math.hypot(e.clientX - downX, e.clientY - downY) < 4) {
+                // Plain click (no drag): open the color picker to recolor or clear this chip
+                activeChip = chip;
+                clonedRange = null;
+                picker.querySelector('h5').textContent = "Change highlight color";
+                picker.style.left = `${e.clientX + 4}px`;
+                picker.style.top = `${e.clientY + 4}px`;
+                toggleColorPicker(picker, 'on');
             }
             chip.style.borderWidth = '1px';
             chip.style.cursor = 'grab';
@@ -274,6 +286,7 @@ const makeHighlightDrag = function () {
 
         // Normal click || select only space
         if (sel.isCollapsed || sel.toString().trim() === '') {
+            activeChip = null;
             toggleColorPicker(picker, 'off');
 
             // Select mark
@@ -326,14 +339,38 @@ const makeHighlightDrag = function () {
 
     // Picker workflow
     picker.addEventListener('click', (e) => {
-        const color = e.target.dataset.color;
-        if (!color || !clonedRange) return;
+        const swatch = e.target.closest('.color-picker--swatch');
+        const color = swatch?.dataset.color;
+        if (!color) return;
+
+        // Editing an existing chip: recolor it, or remove the highlight on "None"
+        if (activeChip) {
+            if (color === 'none') {
+                activeChip.querySelector('.tooltip--text')?.remove();
+                const parent = activeChip.parentNode;
+                while (activeChip.firstChild) {
+                    parent.insertBefore(activeChip.firstChild, activeChip);
+                }
+                parent.removeChild(activeChip);
+                parent.normalize();
+            } else {
+                activeChip.className = `highlight highlight--${color}`;
+            }
+            activeChip = null;
+            toggleColorPicker(picker, 'off');
+            return;
+        }
+
+        if (!clonedRange || color === 'none') {
+            toggleColorPicker(picker, 'off');
+            return;
+        }
 
         const mark = document.createElement('mark');
         mark.className = `highlight highlight--${color}`;
         /**
          * BUG: Do not recall window.getSelection().getRangeAt(0) here
-         * because it's scoped to picker, such that `mark` would be 
+         * because it's scoped to picker, such that `mark` would be
          * added to picker, not chatThread.
          * clonedRange works because it's lexically scoped in chatThread */
 
@@ -348,6 +385,14 @@ const makeHighlightDrag = function () {
     });
 
     document.querySelectorAll('mark').forEach(makeChipDraggable);
+
+    // Close the picker (and clear editing state) on any click outside of it
+    document.addEventListener('pointerdown', (e) => {
+        if (picker.hidden) return;
+        if (picker.contains(e.target) || e.target.nodeName === "MARK") return;
+        activeChip = null;
+        toggleColorPicker(picker, 'off');
+    });
 }();
 
 

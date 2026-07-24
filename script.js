@@ -36,7 +36,13 @@ const drawGrid = function () {
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault();
-})
+});
+
+window.addEventListener('mouseup', (event) => {
+    if (/Edg\//.test(navigator.userAgent)) {
+        event.preventDefault();
+    }
+});
 
 function addTooltip(elem, type = 'chip' | 'markArtefact') {
     // Add a tooltip for each chip in chatThread

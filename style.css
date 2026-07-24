@@ -108,6 +108,7 @@ main {
 
     display: grid;
     gap: var(--grid-gap);
+    position: relative;
 
     grid-template-columns: minmax(66ch, 95ch) minmax(300px, 1fr);
 }
@@ -119,7 +120,7 @@ header {
     border-bottom: 1px solid var(--border-color);
 
     display: grid;
-    grid-template-columns: 8ch 16ch;
+    grid-template-columns: 8ch 16ch 1fr;
 
     color: grey;
     background-color: var(--chat-thread-bg-color);
@@ -131,6 +132,9 @@ header {
 header h1 {
     display: inline-block;
     font-size: 2rem;
+    font-family: "Funnel Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
 }
 
 header h4 {
@@ -424,6 +428,10 @@ header h4 {
 #freehand-toggle:active {
     background-color: rgb(224, 224, 224);
     cursor: pointer;
+}
+
+.freehand-drawing #freehand-canvas {
+    cursor: crosshair;
 }
 
 #freehand-canvas {

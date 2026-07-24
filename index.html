@@ -14,51 +14,53 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
     <script type="module" src="script.js"></script>
 </head>
 
 <body>
+            <section aria-label="Tutorial popup" id="tutorial--overlay">
+            <dialog id="tutorial--dialog">
+                <section class="tutorial--gifLoop">Hello</section>
+            </dialog>
+        </section>
     <main>
+
+
         <section aria-label="Conversation space" id="canvas--conversation">
             <header>
                 <h1>fCrit</h1>
-                <h4>A Reflective Analyst of Furniture Forms</h4>
+                <h4>Reflective Workspace for Furniture Forms</h4>
             </header>
             <menu class="color-picker" hidden>
                 <h5></h5>
                 <div class="color-picker--swatch" data-color="sunshine">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="#ffffc7">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#ffffc7">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                     </svg>Sunshine
                 </div>
                 <div class="color-picker--swatch" data-color="lightgreen">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="#a5d5ac">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#a5d5ac">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                     </svg>Light green
                 </div>
                 <div class="color-picker--swatch" data-color="lavender">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="#c4bbfc">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#c4bbfc">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                     </svg>Lavender
                 </div>
                 <div class="color-picker--swatch" data-color="lightsalmon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="#f2ba86">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#f2ba86">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                     </svg>Salmon
                 </div>
                 <div class="color-picker--swatch" data-color="orange">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="#DA7F51">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#DA7F51">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                     </svg>Tomato
                 </div>
                 <div class="color-picker--swatch color-picker--swatch__none" data-color="none">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-                        fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none">
                         <rect x="1" y="1" width="20" height="20" rx="4" stroke="#cbcbcb" />
                         <line x1="3" y1="19" x2="19" y2="3" stroke="#c0392b" stroke-width="1.5" />
                     </svg>None

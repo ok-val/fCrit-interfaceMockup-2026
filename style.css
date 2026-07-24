@@ -81,7 +81,7 @@ h6 {
 
 :root {
     --grid-gap: 4px;
-    --border-color: #cbcbcb;
+    --border-color: #bbb8b6;
     --btn-hover-color: #ededed;
     --border-radius: 6px;
     --dialogue-padding: 8px 14px;
@@ -89,6 +89,7 @@ h6 {
     --canvas-height: 2000px;
 
     --chat-thread-bg-color: #F5F4F0;
+    --root-bg-color: #EBE7DF;
 
     --sunshine: #FFFFE0;
     --lightgreen: #c7efcd;
@@ -98,7 +99,7 @@ h6 {
 
     font-size: 12px;
     font-family: 'Inter', Helvetica, sans-serif;
-    background-color: #EBE7DF;
+    background-color: var(--root-bg-color);
 }
 
 
@@ -119,8 +120,10 @@ header {
     width: 100%;
     border-bottom: 1px solid var(--border-color);
 
-    display: grid;
-    grid-template-columns: 8ch 16ch 1fr;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* grid-template-columns: 8ch 16ch; */
 
     color: grey;
     background-color: var(--chat-thread-bg-color);
@@ -129,7 +132,12 @@ header {
     border: 1px solid var(--border-color);
 }
 
-header h1 {
+#logo {
+    display: grid;
+    grid-template-columns: 8ch 16ch;
+}
+
+#logo h1 {
     display: inline-block;
     font-size: 2rem;
     font-family: "Funnel Display", sans-serif;
@@ -137,7 +145,7 @@ header h1 {
     font-weight: 800;
 }
 
-header h4 {
+#logo h4 {
     display: inline-block;
     font-size: 0.75rem;
     line-height: 0.8rem;
@@ -145,9 +153,128 @@ header h4 {
 
 
 #tutorial--dialog {
-    border: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 28px;
+
+    background-color: var(--root-bg-color);
+    box-shadow: 1.5px 1.5px 8px rgba(82, 82, 82, 0.459);
 }
 
+#tutorial--dialog img {
+    width: 85vh;
+    border-radius: var(--border-radius);
+}
+
+#tutorial--dialog h1 {
+    font-size: 1.66rem;
+    color: #6a655f;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.33rem 0 0.66rem 0;
+}
+
+#tutorial--dialog p {
+    color: #6a655f;
+    padding-top: 0.66rem;
+    margin-bottom: 0.99rem;
+    font-weight: 500;
+}
+
+#tutorial--dialog .btn--panel {
+    /* border-top: 1px solid var(--border-color); */
+    padding-top: 0.33rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.33em 0.66em;
+
+    transition: background-color 100ms;
+}
+
+#tutorial--dialog button {
+    font-size: 1.33rem;
+}
+
+#tutorial--dialog .material-symbols-outlined {
+    padding-left: 8px;
+    color: grey;
+    /* color: white; */
+}
+
+#tutorial--dialog .btn--skip {
+    border: 0;
+    font-size: 1rem;
+    color: grey;
+    margin-left: 12px;
+}
+
+#tutorial--dialog .btn--skip:hover {
+    border: 0;
+    color: black;
+    text-decoration: underline;
+}
+
+#tutorial--dialog .btn--done {
+    border: 1px solid gray;
+    border-radius: var(--border-radius);
+    margin-left: 8px;
+    padding-left: 8px;
+    background-color: #629886;
+    color: whitesmoke;
+}
+
+#tutorial--dialog .btn--done:hover {
+    background-color: #50ad90;
+}
+
+#tutorial--dialog .btn--done .material-symbols-outlined {
+    color: whitesmoke;
+}
+
+#btn--showTut:hover {
+    background-color: white;
+}
+
+#tutorial--dialog .btn--back:hover,
+#tutorial--dialog .btn--next:hover {
+    background-color: rgba(255, 255, 255, 0.618);
+}
+
+#tutorial--dialog button:disabled {
+    background-color: var(--border-color);
+}
+
+#tutorial--dialog button:disabled:hover {
+    background-color: var(--border-color);
+}
+
+#tutorial--dialog button:disabled .material-symbols-outlined {
+    color: transparent;
+}
+
+#tutorial--dialog .btn--back {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+#tutorial--dialog .btn--next {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+#tutorial--dialog::backdrop {
+    background-color: rgba(125, 125, 125, 0.673);
+}
 
 #canvas--conversation {
     position: relative;
@@ -242,6 +369,10 @@ header h4 {
 
 .color-picker--swatch__none {
     border-top: 1px solid lightgrey;
+}
+
+.color-picker div { 
+    border-radius: 4px;
 }
 
 /* Pseudo-el runs short of color enumeration */

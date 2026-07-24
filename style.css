@@ -144,6 +144,11 @@ header h4 {
 }
 
 
+#tutorial--dialog {
+    border: none;
+}
+
+
 #canvas--conversation {
     position: relative;
     display: grid;

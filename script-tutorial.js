@@ -1,3 +1,9 @@
+import paraHighlightGif from './img/paraHighlight.gif';
+import dragAndDropGif from './img/dragAndDrop.gif';
+import changeHighlightGif from './img/changeHighlight.gif';
+import artefactMarkingGif from './img/artefactMarking.gif';
+
+
 const dialog = document.querySelector("dialog");
 const showButton = document.getElementById("btn--showTut");
 const btnNextIconName = 'arrow_forward_ios';
@@ -45,7 +51,7 @@ function renderTutorial_paraHighlight() {
 
     btnPanel.classList.add('btn--panel');
 
-    img.src = './img/paraHighlight.gif';
+    img.src = paraHighlightGif;
     h1.textContent = 'Highlight a dialogue insight';
     p.textContent = 'Select a phrase from the conversation and choose a color to mark it as an insight.';
 
@@ -87,7 +93,7 @@ function renderTutorial_dragAndDrop() {
 
     btnPanel.classList.add('btn--panel');
 
-    img.src = './img/dragAndDrop.gif';
+    img.src = dragAndDropGif;
     h1.textContent = 'Drag insights onto the artefact';
     p.textContent = 'Drag a highlighted insight from the conversation onto the artefact to pin it in place.';
 
@@ -129,7 +135,7 @@ function renderTutorial_changeHighlight() {
 
     btnPanel.classList.add('btn--panel');
 
-    img.src = './img/changeHighlight.gif';
+    img.src = changeHighlightGif;
     h1.textContent = 'Change or remove a highlight color';
     p.textContent = 'Reopen the color picker on a marked insight to change its color, or remove the highlight entirely.';
 
@@ -174,7 +180,7 @@ function renderTutorial_artefactMarking() {
 
     btnPanel.classList.add('btn--panel');
 
-    img.src = './img/artefactMarking.gif';
+    img.src = artefactMarkingGif;
     h1.textContent = 'Mark a feature on the artefact';
     p.textContent = 'Use the brush tool to draw freehand on the artefact and label the feature you\'re pointing out.';
 

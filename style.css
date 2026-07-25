@@ -429,6 +429,8 @@ button {
     transform: translateX(-50%);
 }
 
+/* Tooltip text */
+
 #freehand-toggle:hover .tooltip--text {
     visibility: visible;
     opacity: 1;
@@ -437,6 +439,14 @@ button {
     /* This can be handled with JS */
     top: 50%;
     left: 120%;
+    transform: translateY(-50%);
+}
+
+#btn--showTut:hover .tooltip--text {
+    visibility: visible;
+    opacity: 1;
+    top: 50%;
+    right: 9%;
     transform: translateY(-50%);
 }
 
